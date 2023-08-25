@@ -59,6 +59,21 @@
             border: none;
             width:100%;
         }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
 </style>    
 <body>
     <h1>YouTube Video Search</h1>
@@ -73,7 +88,9 @@
 
     <h2>Selected Video</h2>
     <iframe id="videoFrame" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
-
+    <footer>
+        <p>Created by Wahyu98Apr | <a href="https://instagram.com/wahyu98apr">Instagram</a></p>
+    </footer>
     <script>
       function search() {
     const searchQuery = document.getElementById("searchQuery").value;
