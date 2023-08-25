@@ -42,6 +42,11 @@
             padding: 20px;
             text-align: center;
         }
+        img {
+            display:block;
+            width:100%;
+            max-width:640px;
+        }
 
         a {
             text-decoration: none;
@@ -115,7 +120,7 @@ function displayResults(results) {
     results.forEach(result => {
         const videoId = result.id.videoId;
         const videoTitle = result.snippet.title;
-        const thumbnailUrl = result.snippet.thumbnails.default.url;
+        const thumbnailUrl = result.snippet.thumbnails.maxres.url;
 
         const videoLink = document.createElement("a");
         videoLink.href = "#";
