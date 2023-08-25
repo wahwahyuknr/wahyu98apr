@@ -47,6 +47,7 @@
             width:100%;
             max-width:640px;
             margin:auto;
+            cursor:pointer;
         }
 
         a {
@@ -127,13 +128,15 @@ function displayResults(results) {
         const videoLink = document.createElement("a");
         videoLink.href = "#";
         videoLink.textContent = videoTitle;
-        videoLink.addEventListener("click", () => {
-            loadVideo(videoId);
-        });
-
         const thumbnailImg = document.createElement("img");
         thumbnailImg.src = thumbnailUrl;
         thumbnailImg.alt = videoTitle;
+        videoLink.addEventListener("click", () => {
+            loadVideo(videoId);
+        });
+        thumbnailImg.addEventListener("click", () => {
+            loadVideo(videoId);
+        });
 
         resultsDiv.appendChild(thumbnailImg);
         resultsDiv.appendChild(videoLink);
