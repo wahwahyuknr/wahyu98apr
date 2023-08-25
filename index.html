@@ -1,4 +1,64 @@
-<html>
-<head><title>Hati ini masih belum terisi</title></head>
-<body>Hati ini masih belum terisi</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Search and Display</title>
+</head>
+<body>
+    <h1>YouTube Video Search</h1>
+    <input type="text" id="searchQuery" placeholder="Enter search keywords">
+    <button onclick="search()">Search</button>
+
+    <div id="results">
+        <!-- Search results will be displayed here -->
+    </div>
+
+    <h2>Selected Video</h2>
+    <iframe id="videoFrame" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+
+    <script>
+      function search() {
+    const searchQuery = document.getElementById("searchQuery").value;
+    const apiKey = "AIzaSyC7_5Uz7C-WCIGPV03xuY_TKM2Au7qDj08"; // Replace with your actual YouTube API key
+    const maxResults = 5;
+
+    // Make an API request to fetch search results
+    fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${searchQuery}&maxResults=${maxResults}&part=snippet&type=video`)
+        .then(response => response.json())
+        .then(data => {
+            displayResults(data.items);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+}
+
+function displayResults(results) {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+
+    results.forEach(result => {
+        const videoId = result.id.videoId;
+        const videoTitle = result.snippet.title;
+
+        const videoLink = document.createElement("a");
+        videoLink.href = "#";
+        videoLink.textContent = videoTitle;
+        videoLink.addEventListener("click", () => {
+            loadVideo(videoId);
+        });
+
+        resultsDiv.appendChild(videoLink);
+        resultsDiv.appendChild(document.createElement("br"));
+    });
+}
+
+function loadVideo(videoId) {
+    const videoFrame = document.getElementById("videoFrame");
+    videoFrame.src = `https://www.youtube.com/embed/${videoId}`;
+}
+
+    </script>
+</body>
 </html>
