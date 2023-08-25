@@ -108,7 +108,7 @@
       function search() {
     const searchQuery = document.getElementById("searchQuery").value;
     const apiKey = "AIzaSyC7_5Uz7C-WCIGPV03xuY_TKM2Au7qDj08"; // Replace with your actual YouTube API key
-    const maxResults = 10;
+    const maxResults = 20;
 
     // Make an API request to fetch search results
     fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${searchQuery}&maxResults=${maxResults}&part=snippet&type=video`)
