@@ -8,7 +8,7 @@
 <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 50px;
+            margin: 10px 50px;
             padding: 0;
             background-color: #f4f4f4;
         }
@@ -62,7 +62,9 @@
 </style>    
 <body>
     <h1>YouTube Video Search</h1>
+    <form  onsubmit="search()">
     <input type="text" id="searchQuery" placeholder="Enter search keywords">
+    </form>
     <button onclick="search()">Search</button>
 
     <div id="results">
