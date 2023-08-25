@@ -8,7 +8,7 @@
 <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 10px 15px;
+            margin: 0;
             padding: 0;
             background-color: #22272e;
         }
@@ -63,10 +63,12 @@
         }
 
         #videoFrame {
-            display: block;
-            margin: 0 auto;
-            border: none;
-            width:100%;
+        display: block;
+        margin: 0 auto;
+        border: none;
+        width: 100%;
+        position: sticky;
+        top: 0px;
         }
         footer {
             text-align: center;
@@ -106,7 +108,7 @@
       function search() {
     const searchQuery = document.getElementById("searchQuery").value;
     const apiKey = "AIzaSyC7_5Uz7C-WCIGPV03xuY_TKM2Au7qDj08"; // Replace with your actual YouTube API key
-    const maxResults = 5;
+    const maxResults = 10;
 
     // Make an API request to fetch search results
     fetch(`https://www.googleapis.com/youtube/v3/search?key=${apiKey}&q=${searchQuery}&maxResults=${maxResults}&part=snippet&type=video`)
