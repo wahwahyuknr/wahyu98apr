@@ -5,6 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Search and Display</title>
 </head>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+        }
+
+        #searchQuery {
+            width: 70%;
+            padding: 10px;
+            margin: 10px auto;
+            display: block;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #results {
+            padding: 20px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        #videoFrame {
+            display: block;
+            margin: 0 auto;
+            border: none;
+        }
+</style>    
 <body>
     <h1>YouTube Video Search</h1>
     <input type="text" id="searchQuery" placeholder="Enter search keywords">
