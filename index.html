@@ -129,7 +129,7 @@ function displayResults(results) {
     results.forEach(result => {
         const videoId = result.id.videoId;
         const videoTitle = result.snippet.title;
-        const thumbnailUrl = result.snippet.thumbnails.default.url.replace('default.jpg','maxresdefault.jpg');
+        const thumbnailUrl = result.snippet.thumbnails.default.url.replace('default.jpg','hqdefault.jpg');
 
         const videoLink = document.createElement("a");
         videoLink.href = "#";
@@ -137,9 +137,6 @@ function displayResults(results) {
         const thumbnailImg = document.createElement("img");
         thumbnailImg.src = thumbnailUrl;
         thumbnailImg.alt = videoTitle;
-        thumbnailImg.onerror = function() {
-            thumbnailImg.src = thumbnailUrl.replace('maxresdefault.jpg','default.jpg'); 
-        };
         videoLink.addEventListener("click", () => {
             loadVideo(videoId);
         });
