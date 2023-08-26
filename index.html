@@ -89,7 +89,7 @@
 <body>
 
 
-    <form  onsubmit="search()">
+    <form action="#" onsubmit="search()">
     <input type="text" id="searchQuery" placeholder="Enter search keywords"><button onclick="search()">Search</button>
     </form>
     
@@ -105,7 +105,8 @@
         <p>Created by Wahyu98Apr | <a href="https://instagram.com/wahyu98apr">Instagram</a></p>
     </footer>
     <script>
-      function search() {
+if (window.location.href.slice(-1) != '#'){window.location='./?#'}    
+function search() {
     const searchQuery = document.getElementById("searchQuery").value;
     const apiKey = "AIzaSyC7_5Uz7C-WCIGPV03xuY_TKM2Au7qDj08"; // Replace with your actual YouTube API key
     const maxResults = 20;
