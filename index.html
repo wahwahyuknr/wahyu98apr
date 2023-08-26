@@ -137,6 +137,9 @@ function displayResults(results) {
         const thumbnailImg = document.createElement("img");
         thumbnailImg.src = thumbnailUrl;
         thumbnailImg.alt = videoTitle;
+        thumbnailImg.onerror = function() {
+            thumbnailImg.src = thumbnailUrl.replace('maxresdefault.jpg','default.jpg'); 
+        };
         videoLink.addEventListener("click", () => {
             loadVideo(videoId);
         });
