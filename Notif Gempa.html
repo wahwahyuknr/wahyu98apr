@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gempa Terbaru</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+body{
+	background-color: #22272e;
+	color:#eee;
+}
+#oneoutput {
+	text-align:center;
+	border: 10px solid orange;
+	box-sizing: border-box;
+}
+#output table{
+    border:1px solid;
+    margin:3%;
+    padding:3%;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+#oneoutput table th {
+    text-align:right;
+}
+#oneoutput table td {
+    text-align:left;
+}
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: white;
+}
+
+footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+</style>
+<body>
+
+<div id="oneoutput"></div>
+<div id="output"></div>
+
+<script>
+function olahData(data){
+ 	var posts = "", InfoGempa = data.Infogempa.gempa;
+	for (var i = 0; i < InfoGempa.length; i++) {
+		var tanggal = InfoGempa[i].Tanggal,
+		 jam = InfoGempa[i].Jam,
+		 datetime = InfoGempa[i].DateTime,
+		 coordinates = InfoGempa[i].Coordinates,
+		 lintang = InfoGempa[i].Lintang,
+		 bujur = InfoGempa[i].Bujur,
+		 magnitude = InfoGempa[i].Magnitude,
+		 kedalaman = InfoGempa[i].Kedalaman,
+		 wilayah = InfoGempa[i].Wilayah,
+		 dirasakan = InfoGempa[i].Dirasakan;
+    posts += '<li><table>'+
+    		'<tr><th>Tanggal</th><td>:</td><td>'+		tanggal+'</td></tr>'+
+            '<tr><th>Jam</th><td>:</td><td>'+		jam+'</td></tr>'+
+            '<tr><th>DateTime</th><td>:</td><td>'+        datetime+'</td></tr>'+
+            '<tr><th>Coordinates</th><td>:</td><td>'+        coordinates+'</td></tr>'+
+            '<tr><th>Lintang</th><td>:</td><td>'+        lintang+'</td></tr>'+
+            '<tr><th>Bujur</th><td>:</td><td>'+        bujur+'</td></tr>'+
+            '<tr><th>Magnitude</th><td>:</td><td>'+        magnitude+'</td></tr>'+
+            '<tr><th>Kedalaman</th><td>:</td><td>'+        kedalaman+'</td></tr>'+
+            '<tr><th>Wilayah</th><td>:</td><td>'+        wilayah+'</td></tr>'+
+            '<tr><th>Dirasakan</th><td>:</td><td>'+        dirasakan+'</td></tr>'+
+            '</table></li>';
+	}
+
+document.getElementById('output').innerHTML = '<ul>'+posts+'</ul>';
+
+	
+}
+function olahData2(data){
+	var InfoGempa = data.Infogempa.gempa,
+		 tanggal = InfoGempa.Tanggal,
+		 jam = InfoGempa.Jam,
+		 datetime = InfoGempa.DateTime,
+		 coordinates = InfoGempa.Coordinates,
+		 lintang = InfoGempa.Lintang,
+		 bujur = InfoGempa.Bujur,
+		 magnitude = InfoGempa.Magnitude,
+		 kedalaman = InfoGempa.Kedalaman,
+		 wilayah = InfoGempa.Wilayah,
+		 potensi = InfoGempa.Potensi,
+		 dirasakan = InfoGempa.Dirasakan,
+		 shakemap = 'https://data.bmkg.go.id/DataMKG/TEWS/'+InfoGempa.Shakemap, 
+		 peta = '<a href="'+shakemap+'" target="_blank"><img style="width:100%;max-width:360px" alt="'+wilayah+'" title="'+wilayah+'" src="'+shakemap+'"/></a>'+
+				'<br /><a target="_blank" href="https://www.google.com/maps/?q='+coordinates+'"><button>VIEW LOCATION IN GOOGLE MAPS</button></a>'
+		 ;
+    posts = '<center><table>'+
+    		'<tr><th>Tanggal</th><td>:</td><td>'+		tanggal+'</td></tr>'+
+            '<tr><th>Jam</th><td>:</td><td>'+		jam+'</td></tr>'+
+            '<tr><th>DateTime</th><td>:</td><td>'+        datetime+'</td></tr>'+
+            '<tr><th>Coordinates</th><td>:</td><td>'+        coordinates+'</td></tr>'+
+            '<tr><th>Lintang</th><td>:</td><td>'+        lintang+'</td></tr>'+
+            '<tr><th>Bujur</th><td>:</td><td>'+        bujur+'</td></tr>'+
+            '<tr><th>Magnitude</th><td>:</td><td>'+        magnitude+'</td></tr>'+
+            '<tr><th>Kedalaman</th><td>:</td><td>'+        kedalaman+'</td></tr>'+
+            '<tr><th>Wilayah</th><td>:</td><td>'+        wilayah+'</td></tr>'+
+            '<tr><th>Potensi</th><td>:</td><td>'+        potensi+'</td></tr>'+
+            '<tr><th>Dirasakan</th><td>:</td><td>'+        dirasakan+'</td></tr>'+
+             '</table></center>';
+document.getElementById('oneoutput').innerHTML = peta+'<ul>'+posts+'</ul>';		 
+}
+
+$(document).ready(function() {
+
+        $.ajax({
+            url: 'https://data.bmkg.go.id/DataMKG/TEWS/gempadirasakan.json',
+            dataType: 'json',
+            success: function(data) {olahData(data)},
+            error: function(xhr, status, error) {
+                console.error(status + ': ' + error);
+                $('#output').text('Error fetching JSON data.');
+            }
+        });
+		
+        $.ajax({
+            url: 'https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json',
+            dataType: 'json',
+            success: function(data) {olahData2(data)},
+            error: function(xhr, status, error) {
+                console.error(status + ': ' + error);
+                $('#oneoutput').text('Error fetching JSON data.');
+            }
+        });
+
+});
+
+
+
+
+</script>
+<i>
+Sumber Data BMKG (Badan Meteorologi, Klimatologi, dan Geofisika) - Situs ini dibuat menggunakan JS jQuery v3.6.0 dengan memanggil data API pembaruan gempa dari server BMKG
+</i>
+    <footer>
+        <p>Created by Wahyu98Apr | <a href="https://instagram.com/wahyu98apr">Instagram</a></p>
+    </footer>
+</body>
+</html>
