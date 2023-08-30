@@ -59,11 +59,20 @@ var angk = Math.floor(Math.random() * 9) + 1;
     interstitialImage.style.maxWidth = '80%';
     interstitialImage.style.maxHeight = '80%';
     interstitialImage.style.border = '10px solid #ee4d2d';
+    interstitialImage.src = imgPrdct;
+    interstitial.style.display = 'block';
     interstitialLink.appendChild(interstitialImage);
-
-    // Set the source of the interstitial image
-      interstitialImage.src = imgPrdct;
-      interstitial.style.display = 'block';
+	
+	// Create the additional image element at the bottom
+    var additionalImage = document.createElement('img');
+    additionalImage.src = 'https://media.suara.com/pictures/653x366/2020/10/26/25067-shopee.jpg';
+    additionalImage.style.position = 'fixed';
+    additionalImage.style.bottom = '0';
+    additionalImage.style.left = '50%';
+    additionalImage.style.transform = 'translateX(-50%)';
+    additionalImage.style.maxWidth = '480px';
+    additionalImage.style.width = '100%';
+    document.body.appendChild(additionalImage);
 
     // Create the close button for the interstitial
     var closeButton = document.createElement('span');
@@ -80,4 +89,5 @@ var angk = Math.floor(Math.random() * 9) + 1;
     // Close the interstitial when the close button is clicked
     closeButton.onclick = function() {
       interstitial.style.display = 'none';
+      additionalImage.style.display = 'none';
     };
