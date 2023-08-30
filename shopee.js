@@ -31,7 +31,6 @@ var angk = Math.floor(Math.random() * 9) + 1;
     linkPrdct="https://shope.ee/1q9ReE2gE7";
 					}  
 
-  
     // Create the interstitial container
     var interstitial = document.createElement('div');
     interstitial.id = 'interstitial';
@@ -63,7 +62,7 @@ var angk = Math.floor(Math.random() * 9) + 1;
     interstitial.style.display = 'block';
     interstitialLink.appendChild(interstitialImage);
 	
-	// Create the additional image element at the bottom
+    // Create the additional image element at the bottom
     var additionalImage = document.createElement('img');
     additionalImage.src = 'https://media.suara.com/pictures/653x366/2020/10/26/25067-shopee.jpg';
     additionalImage.style.position = 'fixed';
@@ -91,3 +90,6 @@ var angk = Math.floor(Math.random() * 9) + 1;
       interstitial.style.display = 'none';
       additionalImage.style.display = 'none';
     };
+
+    // additionalImage is clicked
+    additionalImage.onclick = function() {window.location=linkPrdct};
