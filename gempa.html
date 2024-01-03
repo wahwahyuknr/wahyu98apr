@@ -158,6 +158,52 @@ $(document).ready(function() {
 
 });
 
+// Function to check if data.json is updated
+async function checkAndUpdateNotification() {
+  try {
+    const response = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
+    const data = await response.json();
+
+    // Extract the timestamp from data.json
+    const lastUpdateTimestamp = new Date(data.Infogempa.gempa.DateTime).getTime();
+
+    // Check if the data has been updated (compare with stored timestamp or use other criteria)
+    if (lastUpdateTimestamp > storedTimestamp) {
+      // Data has been updated, show notification
+      showNotification('Earthquake Update', `Magnitude ${data.Infogempa.gempa.Magnitude} earthquake occurred at ${data.Infogempa.gempa.Wilayah}.`);
+
+      // Update stored timestamp for future comparisons
+      storedTimestamp = lastUpdateTimestamp;
+    }
+  } catch (error) {
+    console.error('Error fetching or parsing data.json:', error);
+  }
+}
+
+// Function to show a notification
+function showNotification(title, message) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    // Create and show the notification
+    var notification = new Notification(title, {
+      body: message,
+      icon: 'path/to/icon.png'
+    });
+
+    // Optional: Handle click on the notification
+    notification.onclick = function () {
+      // Do something when the user clicks the notification
+    };
+  }
+}
+
+// Assuming you have a stored timestamp, update it as needed
+let storedTimestamp = 0; // Replace with the actual stored timestamp
+
+// Call the function to check and update the notification
+checkAndUpdateNotification();
+
+// Set up a periodic check every 30 seconds
+setInterval(checkAndUpdateNotification, 30 * 1000); // 30 seconds interval
 
 
 
