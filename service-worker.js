@@ -4,7 +4,7 @@ self.addEventListener('fetch', (event) => {
   // Intercept and handle fetch events here
   const url = new URL(event.request.url);
 
-  if (url.pathname === '/data.json') {
+  if (url.pathname === './test.json') {
     event.respondWith(fetchData(event));
   }
 });
@@ -54,7 +54,7 @@ async function handleBackgroundFetch(event) {
 function showNotification(title, message) {
   self.registration.showNotification(title, {
     body: message,
-    icon: 'path/to/icon.png',
+    icon: 'icon.png',
   });
 }
 
