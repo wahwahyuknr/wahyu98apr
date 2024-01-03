@@ -158,52 +158,86 @@ $(document).ready(function() {
 
 });
 
-// Function to check if data.json is updated
-async function checkAndUpdateNotification() {
-  try {
-    const response = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
-    const data = await response.json();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Example</title>
+</head>
+<body>
+  <button id="requestPermissionBtn">Request Notification Permission</button>
 
-    // Extract the timestamp from data.json
-    const lastUpdateTimestamp = new Date(data.Infogempa.gempa.DateTime).getTime();
+  <script>
+    // Function to check if data.json is updated
+    async function checkAndUpdateNotification() {
+      try {
+        const response = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
+        const data = await response.json();
 
-    // Check if the data has been updated (compare with stored timestamp or use other criteria)
-    if (lastUpdateTimestamp > storedTimestamp) {
-      // Data has been updated, show notification
-      showNotification('Earthquake Update', `Magnitude ${data.Infogempa.gempa.Magnitude} earthquake occurred at ${data.Infogempa.gempa.Wilayah}.`);
+        // Extract the timestamp from data.json
+        const lastUpdateTimestamp = new Date(data.Infogempa.gempa.DateTime).getTime();
 
-      // Update stored timestamp for future comparisons
-      storedTimestamp = lastUpdateTimestamp;
+        // Check if the data has been updated (compare with stored timestamp or use other criteria)
+        if (lastUpdateTimestamp > storedTimestamp) {
+          // Data has been updated, show notification
+          showNotification('Earthquake Update', `Magnitude ${data.Infogempa.gempa.Magnitude} earthquake occurred at ${data.Infogempa.gempa.Wilayah}.`);
+
+          // Update stored timestamp for future comparisons
+          storedTimestamp = lastUpdateTimestamp;
+        }
+      } catch (error) {
+        console.error('Error fetching or parsing data.json:', error);
+      }
     }
-  } catch (error) {
-    console.error('Error fetching or parsing data.json:', error);
-  }
-}
 
-// Function to show a notification
-function showNotification(title, message) {
-  if ('Notification' in window && Notification.permission === 'granted') {
-    // Create and show the notification
-    var notification = new Notification(title, {
-      body: message,
-      icon: './icon.png'
-    });
+    // Function to show a notification
+    function showNotification(title, message) {
+      if ('Notification' in window && Notification.permission === 'granted') {
+        // Create and show the notification
+        var notification = new Notification(title, {
+          body: message,
+          icon: './icon.png'
+        });
 
-    // Optional: Handle click on the notification
-    notification.onclick = function () {
-      // Do something when the user clicks the notification
-    };
-  }
-}
+        // Optional: Handle click on the notification
+        notification.onclick = function () {
+          // Do something when the user clicks the notification
+        };
+      }
+    }
 
-// Assuming you have a stored timestamp, update it as needed
-let storedTimestamp = 0; // Replace with the actual stored timestamp
+    // Function to request notification permission
+    function requestNotificationPermission() {
+      if ('Notification' in window) {
+        Notification.requestPermission().then(function (permission) {
+          if (permission === 'granted') {
+            // Permission granted, you can now show notifications
+            console.log('Notification permission granted.');
+          } else {
+            console.warn('Notification permission denied.');
+          }
+        });
+      } else {
+        console.error('This browser does not support notifications.');
+      }
+    }
 
-// Call the function to check and update the notification
-checkAndUpdateNotification();
+    // Add click event listener to the button
+    document.getElementById('requestPermissionBtn').addEventListener('click', requestNotificationPermission);
 
-// Set up a periodic check every 30 seconds
-setInterval(checkAndUpdateNotification, 30 * 1000); // 30 seconds interval
+    // Assuming you have a stored timestamp, update it as needed
+    let storedTimestamp = 0; // Replace with the actual stored timestamp
+
+    // Call the function to check and update the notification
+    checkAndUpdateNotification();
+
+    // Set up a periodic check every 30 seconds
+    setInterval(checkAndUpdateNotification, 30 * 1000); // 30 seconds interval
+  </script>
+</body>
+</html>
+
 
 
 
