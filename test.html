@@ -13,9 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
-  <button id="requestPermissionBtn">Request Notification Permission</button>
-
-  <script>
+ <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   // TODO: Add SDKs for Firebase products that you want to use
@@ -33,92 +31,6 @@
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
-    // Get a reference to the Firestore database
-    const db = firebase.firestore();
-
-    // Function to check if earthquake data is updated
-    async function checkAndUpdateNotification() {
-      try {
-        // Fetch earthquake data from the specified URL
-        const response = await fetch('test.json');
-        const data = await response.json();
-
-        // Extract the timestamp from the fetched data
-        const lastUpdateTimestamp = new Date(data.gempa.LastUpdate).getTime();
-
-        // Check if the data has been updated (compare with stored timestamp or use other criteria)
-        if (lastUpdateTimestamp > storedTimestamp) {
-          // Data has been updated, show notification
-          showNotification(`Earthquake Update - Magnitude ${data.gempa.Magnitude}`, `Occurred at ${data.gempa.Wilayah}.`);
-
-          // Update stored timestamp for future comparisons
-          storedTimestamp = lastUpdateTimestamp;
-        }
-      } catch (error) {
-        console.error('Error fetching or parsing earthquake data:', error);
-      }
-    }
-
-    // Function to show a notification
-    function showNotification(title, message) {
-      if ('Notification' in window && Notification.permission === 'granted') {
-        // Create and show the notification
-        var notification = new Notification(title, {
-          body: message,
-          icon: 'icon.png' // Use the actual relative path to your icon.png
-        });
-
-        // Optional: Handle click on the notification
-        notification.onclick = function () {
-          // Do something when the user clicks the notification
-        };
-      }
-    }
-
-    // Function to request notification permission
-    function requestNotificationPermission() {
-      if ('Notification' in window) {
-        if (Notification.permission !== 'denied') {
-          Notification.requestPermission().then(function (permission) {
-            if (permission === 'granted') {
-              // Permission granted, you can now show notifications
-              console.log('Notification permission granted.');
-            } else {
-              console.warn('Notification permission denied.');
-            }
-          });
-        } else {
-          console.warn('Notification permission was previously denied by the user.');
-        }
-      } else {
-        console.error('This browser does not support notifications.');
-      }
-    }
-
-    // Add click event listener to the button
-    const permissionBtn = document.getElementById('requestPermissionBtn');
-    permissionBtn.addEventListener('click', requestNotificationPermission);
-
-    // Provide user feedback based on the current notification permission
-    if ('Notification' in window) {
-      if (Notification.permission === 'granted') {
-        console.log('Notification permission already granted.');
-      } else if (Notification.permission === 'denied') {
-        console.warn('Notification permission was previously denied by the user.');
-      }
-    } else {
-      console.error('This browser does not support notifications.');
-    }
-
-    // Assuming you have a stored timestamp, update it as needed
-    let storedTimestamp = 0; // Replace with the actual stored timestamp
-
-    // Call the function to check and update the notification
-    checkAndUpdateNotification();
-
-    // Set up a periodic check every 30 seconds
-    setInterval(checkAndUpdateNotification, 30 * 1000); // 30 seconds interval
-  </script>
+</script>
 </body>
 </html>
