@@ -1,44 +1,55 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Notification Example</title>
+  <!-- Include a favicon -->
+  <link rel="icon" href="icon.png" type="image/x-icon">
+  <!-- Include Firebase SDK version 10.7.1 -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 </head>
 <body>
   <button id="requestPermissionBtn">Request Notification Permission</button>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('service-worker.js')
-        .then(registration => {
-          console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(error => {
-          console.error('Service Worker registration failed:', error);
-        });
-    }
+    // Initialize Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBWvdObIgqXmCidW0SCoFIkuDJNPZPQUDI",
+      authDomain: "earthquakenotif.firebaseapp.com",
+      projectId: "earthquakenotif",
+      storageBucket: "earthquakenotif.appspot.com",
+      messagingSenderId: "323335635505",
+      appId: "1:323335635505:web:98f5c15dc16b00e1ae4b10"
+    };
+    firebase.initializeApp(firebaseConfig);
 
-    
-    // Function to check if data.json is updated
+    // Get a reference to the Firestore database
+    const db = firebase.firestore();
+
+    // Function to check if earthquake data is updated
     async function checkAndUpdateNotification() {
       try {
+        // Fetch earthquake data from the specified URL
         const response = await fetch('test.json');
         const data = await response.json();
 
-        // Extract the timestamp from data.json
-        const lastUpdateTimestamp = new Date(data.Infogempa.gempa.DateTime).getTime();
+        // Extract the timestamp from the fetched data
+        const lastUpdateTimestamp = new Date(data.gempa.LastUpdate).getTime();
 
         // Check if the data has been updated (compare with stored timestamp or use other criteria)
         if (lastUpdateTimestamp > storedTimestamp) {
           // Data has been updated, show notification
-          showNotification('Earthquake Update', `Magnitude ${data.Infogempa.gempa.Magnitude} earthquake occurred at ${data.Infogempa.gempa.Wilayah}.`);
+          showNotification(`Earthquake Update - Magnitude ${data.gempa.Magnitude}`, `Occurred at ${data.gempa.Wilayah}.`);
 
           // Update stored timestamp for future comparisons
           storedTimestamp = lastUpdateTimestamp;
         }
       } catch (error) {
-        console.error('Error fetching or parsing data.json:', error);
+        console.error('Error fetching or parsing earthquake data:', error);
       }
     }
 
@@ -48,7 +59,7 @@
         // Create and show the notification
         var notification = new Notification(title, {
           body: message,
-          icon: 'icon.png'
+          icon: 'icon.png' // Use the actual relative path to your icon.png
         });
 
         // Optional: Handle click on the notification
@@ -79,7 +90,19 @@
     }
 
     // Add click event listener to the button
-    document.getElementById('requestPermissionBtn').addEventListener('click', requestNotificationPermission);
+    const permissionBtn = document.getElementById('requestPermissionBtn');
+    permissionBtn.addEventListener('click', requestNotificationPermission);
+
+    // Provide user feedback based on the current notification permission
+    if ('Notification' in window) {
+      if (Notification.permission === 'granted') {
+        console.log('Notification permission already granted.');
+      } else if (Notification.permission === 'denied') {
+        console.warn('Notification permission was previously denied by the user.');
+      }
+    } else {
+      console.error('This browser does not support notifications.');
+    }
 
     // Assuming you have a stored timestamp, update it as needed
     let storedTimestamp = 0; // Replace with the actual stored timestamp
