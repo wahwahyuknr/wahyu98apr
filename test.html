@@ -31,24 +31,67 @@
    });
 
    const db = firebaseApp.firestore();
-   const auth = firebaseApp.auth();
-   const messaging = firebaseApp.messaging(); // Initialize Firebase Cloud Messaging
+    const auth = firebaseApp.auth();
+    const messaging = firebaseApp.messaging();
 
-   // Request permission for push notifications
-   function requestNotificationPermission() {
+    // Placeholder URL for your JSON data
+    const jsonDataUrl = 'data.json';
+
+    // Request permission for push notifications
+    function requestNotificationPermission() {
       messaging.requestPermission()
-         .then(() => {
-            console.log('Notification permission granted.');
-            return messaging.getToken();
-         })
-         .then((token) => {
-            console.log('Token:', token);
-         })
-         .catch((err) => {
-            console.log('Unable to get permission or token:', err);
-         });
-   }
-</script>
+        .then(() => {
+          console.log('Notification permission granted.');
+          return messaging.getToken();
+        })
+        .then((token) => {
+          console.log('Token:', token);
+        })
+        .catch((err) => {
+          console.log('Unable to get permission or token:', err);
+        });
+    }
+
+    // Check for updates by fetching data from the URL
+    function checkAndUpdateData() {
+      fetch(jsonDataUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Check if the fetched data is updated (adjust this based on your data structure)
+          if (data.updated) {
+            // Data is updated, trigger a push notification
+            sendNotification();
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+    // Function to send a push notification
+    function sendNotification() {
+      // Use Firebase Cloud Messaging to send a push notification
+      // You can customize this part based on your notification requirements
+      const payload = {
+        notification: {
+          title: 'Data Updated',
+          body: 'The data.json has been updated!',
+        },
+      };
+
+      messaging.send(payload)
+        .then(() => {
+          console.log('Push notification sent successfully.');
+        })
+        .catch((error) => {
+          console.error('Error sending push notification:', error);
+        });
+    }
+  </script>
+
+  <h1>Firebase Push Notifications</h1>
+  <button onclick="requestNotificationPermission()">Enable Push Notifications</button>
+  <button onclick="checkAndUpdateData()">Check and Update Data</button>
 
 </body>
 </html>
