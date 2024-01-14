@@ -117,7 +117,7 @@ function olahData2(data){
 		 dirasakan = InfoGempa.Dirasakan,
 		 shakemap = 'https://data.bmkg.go.id/DataMKG/TEWS/'+InfoGempa.Shakemap, 
 		 peta = '<a href="'+shakemap+'" target="_blank"><img style="width:100%;max-width:360px" alt="'+wilayah+'" title="'+wilayah+'" src="'+shakemap+'"/></a>'+
-				'<br /><a target="_blank" href="https://www.google.com/maps/?q='+coordinates+'"><button>VIEW LOCATION IN GOOGLE MAPS</button></a>'
+				'<br /><a target="_blank" href="https://maps.google.com/maps?q='+encodeURIComponent(coordinates)+'&z=&hl=id"><button>VIEW LOCATION IN GOOGLE MAPS</button></a>'
 		 ;
     posts = '<center><table>'+
     		'<tr><th>Tanggal</th><td>:</td><td>'+		tanggal+'</td></tr>'+
